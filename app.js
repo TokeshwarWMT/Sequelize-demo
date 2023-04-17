@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const morgan = require("morgan");
 require('dotenv').config()
 
+app.use(morgan('dev'))
 app.use(
   cors({
     origin: true,

@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
         host: dbConfig.HOST,
         dialect: dbConfig.dialect,
         operatorsAliases: 0,
-
+        logging:true,
         pool: {
             max: dbConfig.pool.max,
             min: dbConfig.pool.min,

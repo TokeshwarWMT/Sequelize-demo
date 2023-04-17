@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -20,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       ratings: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       specifications: {
