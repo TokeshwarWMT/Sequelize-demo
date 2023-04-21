@@ -7,7 +7,6 @@ const authentication = require('../middleware/auth');
 
 router.post("/createProduct", upload.single("image"), productController.createProduct);
 router.get("/getAllProduct", productController.getAllProduct);
-router.get("/filterProduct", productController.filterProduct)
 
 
 module.exports = router;

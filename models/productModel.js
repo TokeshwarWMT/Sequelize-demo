@@ -39,11 +39,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-   
+      offers: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        get() {
+          const offers = this.getDataValue("offers");
+          return offers ? offers.split(",") : [];
+        },
+        set(value) {
+          this.setDataValue("offers", value.join(","));
+        },
+      },
     },
     {
       timestamps: false,
-      initialAutoIncrement: 1000,
+      initialAutoIncrement: 1001,
     }
   );
   Product.associate = (models) => {

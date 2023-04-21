@@ -17,10 +17,12 @@ const createProduct = async (req, res) => {
       specifications: req.body.specifications,
       price: req.body.price,
       originalPrice: req.body.originalPrice,
+      offers: req.body.offers.split(',')
     });
     await product.save();
     res.json(product);
   } catch (error) {
+    console.log(error)
     return res.status(500).json(error);
   }
 };
@@ -44,67 +46,9 @@ const getAllProduct = async (req, res) => {
     }
 
     if (title) {
-      whereClause.title = { [Op.like]: `%${title}%` };
-    }
-
-    if (ratings) {
-      whereClause.ratings = { [Op.like]: ratings };
-    }
-
-    let products;
-
-    if (ram) {
-      const ramValues = ram.split(",");
-      whereClause = {
-        ...whereClause,
-        [Op.and]: {
-          [Op.or]: ramValues.map((value) =>
-            sequelize.literal(
-              `JSON_EXTRACT(specifications, '$.ram') LIKE '%${value}%'`
-            )
-          ),
-        },
-      };
-    }
-    
-      if (limit) {
-        products = await Product.findAll({
-          where: whereClause,
-          limit: Number(limit),
-        });
-      } else {
-        products = await Product.findAll({ where: whereClause });
-      
-    }
-
-    return res.status(200).json(products);
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json(error.message);
-  }
-};
-
-const filterProduct = async (req, res) => {
-  try {
-    const { id, limit, minprice, maxprice, title, ratings, ram } = req.query;
-
-    let whereClause = {};
-
-    if (id) {
-      whereClause.id = id;
-    }
-
-    if (minprice) {
-      whereClause.price = { [Op.gte]: minprice };
-    }
-
-    if (maxprice) {
-      whereClause.price = { ...whereClause.price, [Op.lte]: maxprice };
-    }
-
-    if (title) {
       const titleValues = title.split(",");
-      whereClause[Op.and] = [...(whereClause[Op.and] || []),
+      whereClause[Op.and] = [
+        ...(whereClause[Op.and] || []),
         {
           [Op.or]: titleValues.map((value) => ({
             title: { [Op.like]: `%${value}%` },
@@ -115,7 +59,8 @@ const filterProduct = async (req, res) => {
 
     if (ratings) {
       const ratingsValues = ratings.split(",");
-      whereClause[Op.and] = [...(whereClause[Op.and] || []),
+      whereClause[Op.and] = [
+        ...(whereClause[Op.and] || []),
         {
           [Op.or]: ratingsValues.map((value) => ({
             ratings: { [Op.like]: `%${value}%` },
@@ -126,7 +71,8 @@ const filterProduct = async (req, res) => {
 
     if (ram) {
       const ramValues = ram.split(",");
-      whereClause[Op.and] = [...(whereClause[Op.and] || []),
+      whereClause[Op.and] = [
+        ...(whereClause[Op.and] || []),
         {
           [Op.or]: ramValues.map((value) =>
             sequelize.literal(
@@ -155,14 +101,7 @@ const filterProduct = async (req, res) => {
 
 
 
-
-
-
-
-
-
 module.exports = {
   createProduct,
   getAllProduct,
-  filterProduct
 };

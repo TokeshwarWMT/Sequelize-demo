@@ -21,8 +21,11 @@ const product = require("./routes/product");
 app.use("/api/users", user);
 app.use("/api/products", product);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server is listening on ${PORT}`);
 });
+
+
+
